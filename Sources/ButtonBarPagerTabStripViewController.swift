@@ -326,6 +326,21 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
         if let highlightedImage = indicatorInfo.highlightedImage {
             cell.imageView.highlightedImage = highlightedImage
         }
+        
+        if let image = indicatorInfo.image, let text = indicatorInfo.title {
+            let textAttributed = NSAttributedString(string: text)
+
+            let iconAttachment = NSTextAttachment()
+            iconAttachment.bounds = CGRect(x: 0, y: (cell.label.font.capHeight-20).rounded() / 2, width: 20, height: 20)
+            iconAttachment.image = image            
+            let attributedTextWithImage = NSMutableAttributedString(attachment: iconAttachment)
+            attributedTextWithImage.append(NSAttributedString(string: "  "))
+            attributedTextWithImage.append(textAttributed)
+            
+            cell.label.attributedText = attributedTextWithImage
+            cell.imageView.image = nil
+            cell.imageView.highlightedImage = nil
+        }
 
         configureCell(cell, indicatorInfo: indicatorInfo)
 
@@ -372,7 +387,10 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
                 minimumCellWidths.append(width)
                 collectionViewContentWidth += width
             case .nibFile(_, _, let widthCallback):
-                let width = widthCallback(indicatorInfo)
+                var width = widthCallback(indicatorInfo)
+                if indicatorInfo.image != nil && indicatorInfo.title != nil {
+                    width += 24
+                }
                 minimumCellWidths.append(width)
                 collectionViewContentWidth += width
             }
