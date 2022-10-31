@@ -339,8 +339,8 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
             
             if let indicatorAmount = indicatorInfo.indicatorAmount {
                 if #available(iOS 10.0, *) {
-                    let temp = indicatorInfoWithNotificationIndicator(notificationIndicatorAmount: indicatorAmount)
-                    attributedTextWithImage.append(temp)
+                    let indicatorImage = indicatorInfoWithNotificationIndicator(notificationIndicatorAmount: indicatorAmount)
+                    attributedTextWithImage.append(indicatorImage)
                 }
             }
             
