@@ -28,6 +28,7 @@ public struct IndicatorInfo {
 
     public var title: String?
     public var image: UIImage?
+    public var indicatorAmount: Int?
     public var highlightedImage: UIImage?
     public var accessibilityLabel: String?
     public var userInfo: Any?
@@ -43,10 +44,11 @@ public struct IndicatorInfo {
         self.userInfo = userInfo
     }
     
-    public init(title: String?, image: UIImage?, highlightedImage: UIImage? = nil, userInfo: Any? = nil) {
+    public init(title: String?, image: UIImage?, indicatorAmount: Int?, highlightedImage: UIImage? = nil, userInfo: Any? = nil) {
         self.title = title
         self.accessibilityLabel = title
         self.image = image
+        self.indicatorAmount = indicatorAmount
         self.highlightedImage = highlightedImage
         self.userInfo = userInfo
     }
@@ -77,4 +79,45 @@ extension IndicatorInfo : ExpressibleByStringLiteral {
         title = value
         accessibilityLabel = value
     }
+}
+
+func circleAroundDigit(_ num:Int, circleColor:UIColor,
+                       digitColor:UIColor, diameter:CGFloat,
+                       font:UIFont) -> UIImage {
+    let p = NSMutableParagraphStyle()
+    p.alignment = .center
+    let s = NSAttributedString(string: String(num), attributes:
+        [.font:font, .foregroundColor:digitColor, .paragraphStyle:p])
+    let r = UIGraphicsImageRenderer(size: CGSize(width:diameter, height:diameter))
+    return r.image {con in
+        circleColor.setFill()
+        con.cgContext.fillEllipse(in:
+            CGRect(x: 0, y: 0, width: diameter, height: diameter))
+        s.draw(in: CGRect(x: 0, y: diameter / 2 - font.lineHeight / 2,
+                          width: diameter, height: diameter))
+    }
+}
+
+func indicatorInfoWithNotificationIndicator(notificationIndicatorAmount: Int) -> NSAttributedString {
+    let fullString = NSMutableAttributedString()
+    let titleFont = UIFont.systemFont(ofSize: 10, weight: .medium)
+    let indicatorImage = circleAroundDigit(notificationIndicatorAmount,
+                                           circleColor: UIColor(red: 245/255, green: 166/255, blue: 35/255, alpha: 1),
+                                           digitColor: .white,
+                                           diameter: 20,
+                                           font:titleFont)
+    
+    let padding = NSTextAttachment()
+    padding.bounds = CGRect(x: 0, y: 0, width: 5, height: 0)
+    let paddingAttributedString = NSAttributedString(attachment: padding)
+    
+    let indicatorImageAttachment = NSTextAttachment()
+    indicatorImageAttachment.image = indicatorImage
+    indicatorImageAttachment.bounds = CGRect(x: 0, y: ((titleFont.capHeight - indicatorImage.size.height).rounded() / 2)+1, width: indicatorImage.size.width, height: indicatorImage.size.height)
+    let indicatorImageAttributedString = NSAttributedString(attachment: indicatorImageAttachment)
+    
+    fullString.append(paddingAttributedString)
+    fullString.append(indicatorImageAttributedString)
+
+    return fullString
 }

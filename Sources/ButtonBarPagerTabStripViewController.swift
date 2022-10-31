@@ -337,6 +337,13 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
             attributedTextWithImage.append(NSAttributedString(string: "  "))
             attributedTextWithImage.append(textAttributed)
             
+            if let indicatorAmount = indicatorInfo.indicatorAmount {
+                if #available(iOS 10.0, *) {
+                    let temp = indicatorInfoWithNotificationIndicator(notificationIndicatorAmount: indicatorAmount)
+                    attributedTextWithImage.append(temp)
+                }
+            }
+            
             cell.label.attributedText = attributedTextWithImage
             cell.imageView.image = nil
             cell.imageView.highlightedImage = nil
@@ -391,6 +398,11 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
                 if indicatorInfo.image != nil && indicatorInfo.title != nil {
                     width += 24
                 }
+                
+                if indicatorInfo.indicatorAmount != nil {
+                    width += 15
+                }
+                
                 minimumCellWidths.append(width)
                 collectionViewContentWidth += width
             }
