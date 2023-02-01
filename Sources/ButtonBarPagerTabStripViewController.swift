@@ -351,6 +351,7 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
         
         if let attributedTitle = indicatorInfo.attributedTitle {
             cell.label.attributedText = attributedTitle
+            cell.label.numberOfLines = 2
         }
 
         configureCell(cell, indicatorInfo: indicatorInfo)
