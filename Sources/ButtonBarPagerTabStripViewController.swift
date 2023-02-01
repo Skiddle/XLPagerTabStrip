@@ -348,6 +348,10 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
             cell.imageView.image = nil
             cell.imageView.highlightedImage = nil
         }
+        
+        if let attributedTitle = indicatorInfo.attributedTitle {
+            cell.label.attributedText = attributedTitle
+        }
 
         configureCell(cell, indicatorInfo: indicatorInfo)
 

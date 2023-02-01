@@ -27,6 +27,7 @@ import Foundation
 public struct IndicatorInfo {
 
     public var title: String?
+    public var attributedTitle: NSAttributedString?
     public var image: UIImage?
     public var indicatorAmount: Int?
     public var highlightedImage: UIImage?
@@ -51,6 +52,11 @@ public struct IndicatorInfo {
         self.indicatorAmount = indicatorAmount
         self.highlightedImage = highlightedImage
         self.userInfo = userInfo
+    }
+    
+    public init(title: NSAttributedString) {
+        self.attributedTitle = title
+        self.accessibilityLabel = title.string
     }
     
     public init(title: String?, accessibilityLabel:String?, image: UIImage?, highlightedImage: UIImage? = nil, userInfo: Any? = nil) {
