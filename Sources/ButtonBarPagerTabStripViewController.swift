@@ -408,6 +408,13 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
                     width += 15
                 }
                 
+                if indicatorInfo.attributedTitle != nil {
+                    let padding = 10
+                    let allAttributes = indicatorInfo.attributedTitle!.attributes(at: 0, effectiveRange: nil)
+                    let size = (indicatorInfo.attributedTitle!.string as NSString).size(withAttributes: allAttributes)
+                    width = size.width + CGFloat(padding*2)
+                }
+                
                 minimumCellWidths.append(width)
                 collectionViewContentWidth += width
             }
